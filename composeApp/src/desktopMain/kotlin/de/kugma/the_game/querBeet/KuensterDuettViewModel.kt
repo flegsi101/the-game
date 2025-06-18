@@ -68,6 +68,8 @@ internal class KuensterDuettViewModel(game: QuerBeetGame) {
     }
 
     fun initTurn(team: Team) {
+        stopCountdown()
+
         val terms = mutableListOf<String>()
         val available = state.value.availableTerms.toMutableList()
 

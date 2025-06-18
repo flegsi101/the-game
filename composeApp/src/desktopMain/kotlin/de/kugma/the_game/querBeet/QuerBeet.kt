@@ -45,4 +45,8 @@ class QuerBeetGame(val conext: TheGame) : Game {
         winner[round] = team
         _state.update { it.copy(winner = winner, currentRound = QuerBeetRound.None) }
     }
+
+    internal fun resetState() {
+        _state.update { QuerBeetState() }
+    }
 }

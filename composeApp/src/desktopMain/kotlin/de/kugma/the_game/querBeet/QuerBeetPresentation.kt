@@ -35,7 +35,7 @@ fun QuerBeetPresentation(game: QuerBeetGame, modifier: Modifier) {
     when (state.currentRound) {
         QuerBeetRound.None -> Overview(game, modifier)
         QuerBeetRound.StaubsaugerStaffel -> StaubsaugerStaffelPresentation()
-        QuerBeetRound.OhrenAufSpeed -> OhrenAufSpeed(game)
+        QuerBeetRound.OhrenAufSpeed -> OhrenAufSpeedPresentation(game)
         QuerBeetRound.Schuetten -> SchuettenPresentation()
         QuerBeetRound.KuenstlerDuett -> KuenstlerDuettPresentation(game)
     }
@@ -97,24 +97,6 @@ private fun ColumnScope.SingleGame(round: QuerBeetRound, state: QuerBeetState) {
                 .background(GameColor.Red.copy(if (winner == Team.Team2 || winner == Team.Both) 1f else 0.2f))
         ) {
 
-        }
-    }
-}
-
-@Composable
-private fun OhrenAufSpeed(querBeet: QuerBeetGame) {
-    val state by querBeet.ohrenAufSpeedState.collectAsState(OhrenAufSpeedState())
-    Text(QuerBeetRound.OhrenAufSpeed.title)
-
-    Row {
-        Column {
-            Text("Team 1")
-            Text(state.pointsTeam1.toString())
-        }
-
-        Column {
-            Text("Team 2")
-            Text(state.pointsTeam2.toString())
         }
     }
 }
