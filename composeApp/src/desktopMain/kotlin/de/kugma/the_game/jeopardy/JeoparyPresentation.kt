@@ -35,29 +35,23 @@ fun JeopardyPresentation(
     val state by game.state.collectAsState()
     val openQuestion by game.currentQuestion.collectAsState(null)
 
-    if (onTitle)
-        Box(modifier = modifier) {
-            Text(
-                text = "Jeopardy",
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-    else {
-        Row(modifier = modifier) {
-            JeopardyPoints(state.pointsTeamOne)
+    if (!onTitle) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = modifier
+                .padding(20.dp),
+        ) {
             if (openQuestion != null) {
                 Box(
                     modifier = Modifier
-                        .weight(10f)
-                        .padding(20.dp),
+                        .weight(1f)
                 ) {
                     openQuestion!!.render(GameWindow.Presentation)
                 }
             } else {
                 Row(
                     modifier = Modifier
-                        .weight(10f)
-                        .padding(20.dp),
+                        .weight(1f),
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     QuestionCatergory(state, 0)
@@ -67,25 +61,26 @@ fun JeopardyPresentation(
                     QuestionCatergory(state, 4)
                 }
             }
-            JeopardyPoints(state.pointsTeamTwo)
-        }
-    }
-}
 
-@Composable
-private fun RowScope.JeopardyPoints(points: Int) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(top = 30.dp)
-            .fillMaxHeight()
-            .weight(1f)
-    ) {
-        Text(
-            text = points.toString(),
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
-        )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
+                Text(
+                    text = "Team 1 - ${state.pointsTeamOne}",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = "${state.pointsTeamOne} - Team 2",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
     }
 }
 

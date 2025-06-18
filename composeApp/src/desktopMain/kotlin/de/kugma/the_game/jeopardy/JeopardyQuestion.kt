@@ -1,8 +1,20 @@
 package de.kugma.the_game.jeopardy
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import de.kugma.the_game.GameWindow
 
 interface JeopardyQuestion {
@@ -12,9 +24,41 @@ interface JeopardyQuestion {
     fun render(window: GameWindow)
 }
 
+@Composable
+fun SimpleQuestion(question: String) {
+    Box(modifier = Modifier.fillMaxSize().padding(20.dp)) {
+        Text(
+            text = question,
+            textAlign = TextAlign.Center,
+            fontSize = 50.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun MutlilineQuestion(questions: List<Pair<String, TextUnit>>) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize().padding(20.dp)
+    ) {
+        for (question in questions) {
+            Text(
+                text = question.first,
+                textAlign = TextAlign.Center,
+                fontSize = question.second,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
 //==========================================================
 // Baderegeln
 //==========================================================
+
 class Baderegeln100 : JeopardyQuestion {
 
     override fun getPoints(): Int {
@@ -29,11 +73,8 @@ class Baderegeln100 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Ich kühle mich ab")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Ich kühle mich ab")
     }
 }
 
@@ -51,11 +92,8 @@ class Baderegeln200 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Rennen, Schubsen, unter Wasser drücken")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Rennen, Schubsen, unter Wasser drücken")
     }
 }
 
@@ -73,11 +111,8 @@ class Baderegeln300 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("JOKER 🥳")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("JOKER 🥳")
     }
 }
 
@@ -95,11 +130,8 @@ class Baderegeln400 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Ich verlasse sofort das Wasser")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Ich verlasse sofort das Wasser")
     }
 }
 
@@ -117,11 +149,8 @@ class Baderegeln500 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Sie sind nicht sicher und schützen nicht vor dem Ertrinken")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Sie sind nicht sicher und schützen nicht vor dem Ertrinken")
     }
 }
 
@@ -143,11 +172,8 @@ class Wissen100 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welcher Körperteil wächst ein Leben lang weiter?")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Welcher Körperteil wächst ein Leben lang weiter?")
     }
 }
 
@@ -165,11 +191,8 @@ class Wissen200 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Warum sehen Flamingos pink aus?")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Warum sehen Flamingos pink aus?")
     }
 }
 
@@ -187,11 +210,8 @@ class Wissen300 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Wie viele Herzen hat ein Tintenfisch?")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Wie viele Herzen hat ein Tintenfisch?")
     }
 }
 
@@ -209,11 +229,8 @@ class Wissen400 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Wie viele Liter Blut hat ein durchschnittlicher Mensch")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Wie viele Liter Blut hat ein durchschnittlicher Mensch?")
     }
 }
 
@@ -231,17 +248,35 @@ class Wissen500 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welcher Stoff ist härter als Diamant – und kommt sogar in Bleistiften vor?")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Welcher Stoff ist härter als Diamant – und kommt sogar in Bleistiften vor?")
     }
 }
 
 //==========================================================
 // Emoji
 //==========================================================
+@Composable
+private fun EmojiPresentation(question: String, emojis: String) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize().padding(20.dp)
+    ) {
+        Text(
+            text = question,
+            textAlign = TextAlign.Center,
+            fontSize = 50.sp,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            text = emojis,
+            textAlign = TextAlign.Center,
+            letterSpacing = TextUnit(40f, TextUnitType.Sp),
+            fontSize = 120.sp
+        )
+    }
+}
 
 class Emoji100 : JeopardyQuestion {
 
@@ -257,12 +292,8 @@ class Emoji100 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welcher Film wird gesucht?")
-                Text("🤵‍♂️🦇🌃")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            EmojiPresentation("Welcher Film wird gesucht?", "🤵‍♂️🦇🌃")
     }
 }
 
@@ -280,12 +311,8 @@ class Emoji200 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welches Spiel wird gesucht?")
-                Text("⛏️🟫🟩🏡")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            EmojiPresentation("Welches Spiel wird gesucht?", "⛏️🟫🟩🏡")
     }
 }
 
@@ -303,12 +330,8 @@ class Emoji300 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welches Sprichwort wird gesucht?")
-                Text("🦯🐓🔎🌽")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            EmojiPresentation("Welches Sprichwort wird gesucht?", "🦯🐓🔎🌽")
     }
 }
 
@@ -326,12 +349,8 @@ class Emoji400 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welcher Film wird gesucht?")
-                Text("🦔🔵💨👟")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            EmojiPresentation("Welcher Film wird gesucht?", "🦔🔵💨👟")
     }
 }
 
@@ -349,12 +368,8 @@ class Emoji500 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welches Sprichwort wird gesucht?")
-                Text("🤔🐷😗🎵")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            EmojiPresentation("Welches Sprichwort wird gesucht?", "🤔🐷😗🎵")
     }
 }
 
@@ -376,11 +391,8 @@ class Wortkunst100 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Was ergibt das Anagramm „ramke“?")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Was ergibt das Anagramm „ramke“?")
     }
 }
 
@@ -398,12 +410,13 @@ class Wortkunst200 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welches Sprichwort ist hier verdreht?")
-                Text("„Im Regen sitzen“")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            MutlilineQuestion(
+                listOf(
+                    Pair("Welches Sprichwort ist hier verdreht?", 50.sp),
+                    Pair("„Im Regen sitzen“", 60.sp),
+                )
+            )
     }
 }
 
@@ -421,11 +434,8 @@ class Wortkunst300 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welches deutsche Wort hat 3 Bedeutungen?")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Welches deutsche Wort hat 3 Bedeutungen?")
     }
 }
 
@@ -443,11 +453,8 @@ class Wortkunst400 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Welches Wort steckt in: „TOMATE“ + „RATTE“ – aber nicht in „MOTTE“?")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            SimpleQuestion("Welches Wort steckt in: „TOMATE“ + „RATTE“ – aber nicht in „MOTTE“?")
     }
 }
 
@@ -465,18 +472,53 @@ class Wortkunst500 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Das Rätsel der Sphinx")
-                Text("Was geht am Morgen auf vier, am Mittag auf zwei und am Abend auf drei Beinen?")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            MutlilineQuestion(
+                listOf(
+                    Pair("Das Rätsel der Sphinx", 50.sp),
+                    Pair(
+                        "Was geht am Morgen auf vier, am Mittag auf zwei und am Abend auf drei Beinen?",
+                        60.sp
+                    ),
+                )
+            )
     }
 }
 
 //==========================================================
 // Fake or Real?
 //==========================================================
+@Composable
+fun FakeOrRealPresentation(question: String, a: String, b: String) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize().padding(20.dp)
+    ) {
+        Text(
+            text = question,
+            textAlign = TextAlign.Center,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            Text(
+                text = a,
+                textAlign = TextAlign.Center,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = b,
+                textAlign = TextAlign.Center,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
 class FakeOrReal100 : JeopardyQuestion {
 
     override fun getPoints(): Int {
@@ -491,13 +533,12 @@ class FakeOrReal100 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Was ist richtig?")
-                Text("A) Der Eiffelturm ist im Sommer höher als im Winter.")
-                Text("B) Der Mond ist größer als die Erde.")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            FakeOrRealPresentation(
+                "Was ist richtig?",
+                "A) Der Eiffelturm ist im Sommer höher als im Winter.",
+                "B) Der Mond ist größer als die Erde."
+            )
     }
 }
 
@@ -515,13 +556,12 @@ class FakeOrReal200 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Was ist richtig?")
-                Text("A) Goldfische haben ein 3-Sekunden-Gedächtnis.")
-                Text("B) Goldfische können trainiert werden.")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            FakeOrRealPresentation(
+                "Was ist richtig?",
+                "A) Goldfische haben ein 3-Sekunden-Gedächtnis.",
+                "B) Goldfische können trainiert werden.",
+            )
     }
 }
 
@@ -539,13 +579,12 @@ class FakeOrReal300 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Was ist richtig?")
-                Text("A) Die Sahara war einmal ein grüner Urwald.")
-                Text("B) Es hat noch nie in Ägypten geschneit.")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            FakeOrRealPresentation(
+                "Was ist richtig?",
+                "A) Die Sahara war einmal ein grüner Urwald.",
+                "B) Es hat noch nie in Ägypten geschneit.",
+            )
     }
 }
 
@@ -563,13 +602,12 @@ class FakeOrReal400 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Was ist richtig?")
-                Text("A) In der Antarktis gibt es eine Poststation.")
-                Text("B) In Island gibt es keine Insekten.")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            FakeOrRealPresentation(
+                "Was ist richtig?",
+                "A) In der Antarktis gibt es eine Poststation.",
+                "B) In Island gibt es keine Insekten.",
+            )
     }
 }
 
@@ -587,12 +625,11 @@ class FakeOrReal500 : JeopardyQuestion {
             }
         }
 
-        if (window == GameWindow.Presentation) {
-            Column {
-                Text("Was ist richtig?")
-                Text("A) Menschen und Dinosaurier lebten zur gleichen Zeit.")
-                Text("B) Einige Haie sind älter als Bäume.")
-            }
-        }
+        if (window == GameWindow.Presentation)
+            FakeOrRealPresentation(
+                "Was ist richtig?",
+                "A) Menschen und Dinosaurier lebten zur gleichen Zeit.",
+                "B) Einige Haie sind älter als Bäume.",
+            )
     }
 }
