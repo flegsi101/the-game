@@ -1,0 +1,137 @@
+package de.kugma.the_game.jeopardy
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import de.kugma.the_game.GameColor
+import de.kugma.the_game.GameWindow
+
+@Composable
+fun JeopardyPresentation(
+    game: Jeopardy,
+    modifier: Modifier = Modifier
+) {
+    val onTitle by game.onTitle.collectAsState()
+    val state by game.state.collectAsState()
+    val openQuestion by game.currentQuestion.collectAsState(null)
+
+    if (onTitle)
+        Box(modifier = modifier) {
+            Text(
+                text = "Jeopardy",
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    else {
+        Row(modifier = modifier) {
+            JeopardyPoints(state.pointsTeamOne)
+            if (openQuestion != null) {
+                Box(
+                    modifier = Modifier
+                        .weight(10f)
+                        .padding(20.dp),
+                ) {
+                    openQuestion!!.render(GameWindow.Presentation)
+                }
+            } else {
+                Row(
+                    modifier = Modifier
+                        .weight(10f)
+                        .padding(20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    QuestionCatergory(state, 0)
+                    QuestionCatergory(state, 1)
+                    QuestionCatergory(state, 2)
+                    QuestionCatergory(state, 3)
+                    QuestionCatergory(state, 4)
+                }
+            }
+            JeopardyPoints(state.pointsTeamTwo)
+        }
+    }
+}
+
+@Composable
+private fun RowScope.JeopardyPoints(points: Int) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(top = 30.dp)
+            .fillMaxHeight()
+            .weight(1f)
+    ) {
+        Text(
+            text = points.toString(),
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+private fun RowScope.QuestionCatergory(state: State, index: Int) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .weight(1f)
+            .fillMaxHeight()
+    ) {
+        Text(
+            text = Jeopardy.Categories[index],
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            color = Color.White,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(Color(0xff3a3a3a))
+                .padding(10.dp)
+        )
+        QuestionCard("100", state.questionStates[index][0])
+        QuestionCard("200", state.questionStates[index][1])
+        QuestionCard("300", state.questionStates[index][2])
+        QuestionCard("400", state.questionStates[index][3])
+        QuestionCard("500", state.questionStates[index][4])
+    }
+}
+
+@Composable
+private fun ColumnScope.QuestionCard(text: String, marked: Boolean) {
+    Box(
+        modifier = Modifier
+            .padding(10.dp)
+            .weight(1f)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .background(if (marked) GameColor.Gray else GameColor.Blue)
+    ) {
+        Text(
+            text = text,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
