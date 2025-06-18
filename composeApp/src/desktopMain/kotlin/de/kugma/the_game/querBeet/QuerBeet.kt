@@ -1,64 +1,48 @@
 package de.kugma.the_game.querBeet
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import de.kugma.the_game.Game
+import de.kugma.the_game.TheGame
+import de.kugma.the_game.common.Team
 import de.kugma.the_game.common.createPersistedState
 import de.kugma.the_game.common.update
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.Serializable
 
-internal enum class Round(val title: String) {
-    None("Home"),
-    StaubsaugerStaffel("Staubsauger Staffel"),
-    OhrenAufSpeed("Ohren auf Speed"),
-    Schuetten("Schütten"),
-    KuenstlerDuett("Künstler Duett"),
-}
+class QuerBeetGame(val conext: TheGame) : Game {
 
-@Serializable
-internal data class State(
-    val currentRound: Round = Round.None,
-    val ohrenAufSpeedState: OhrenAufSpeedState = OhrenAufSpeedState(),
-    val kuenstlerDuettState: KuenstlerDuettState = KuenstlerDuettState()
-)
+    private val _state = createPersistedState("querBeet.json", QuerBeetState())
+    internal val state = _state.asStateFlow()
 
-class QuerBeet {
-    private val _querBeetState = createPersistedState("querBeet.json", State())
-    internal val querBeetState = _querBeetState.asStateFlow()
-    internal val ohrenAufSpeedState = querBeetState.map { it.ohrenAufSpeedState }
-    internal val kuenstlerDuettState = querBeetState.map { it.kuenstlerDuettState }
+    internal val ohrenAufSpeedState = state.map { it.ohrenAufSpeedState }
 
-    internal fun setRound(round: Round) {
-        _querBeetState.update { it.copy(currentRound = round) }
+    internal val kuenstlerDuettViewModel = KuensterDuettViewModel(this)
+
+    @Composable
+    override fun presentation(modifier: Modifier) {
+        QuerBeetPresentation(this, modifier)
+    }
+
+    @Composable
+    override fun moderation(modifier: Modifier) {
+        QuerBeetModeration(this, modifier)
+    }
+
+    internal fun setRound(round: QuerBeetRound) {
+        _state.update { it.copy(currentRound = round) }
     }
 
     internal fun updateOhrenAufSpeed(function: (current: OhrenAufSpeedState) -> OhrenAufSpeedState) {
-        _querBeetState.update {
+        _state.update {
             it.copy(
                 ohrenAufSpeedState = function(it.ohrenAufSpeedState)
             )
         }
     }
 
-    internal fun resetKuenstlerDuett() {
-        _querBeetState.update {
-            it.copy(
-                kuenstlerDuettState = KuenstlerDuettState()
-            )
-        }
-    }
-
-    internal fun initKuenstlerDuett() {
-        _querBeetState.update {
-            it.copy(
-                kuenstlerDuettState = initKuenstlerDuettRounds(it.kuenstlerDuettState)
-            )
-        }
-    }
-
-    internal fun updateKuenstlerDuett(function: (current: KuenstlerDuettState) -> KuenstlerDuettState) {
-        _querBeetState.update {
-            it.copy(
-                kuenstlerDuettState = function(it.kuenstlerDuettState)
-            )
-        }
+    internal fun onRoundWon(round: QuerBeetRound, team: Team) {
+        val winner = state.value.winner.toMutableMap()
+        winner[round] = team
+        _state.update { it.copy(winner = winner, currentRound = QuerBeetRound.None) }
     }
 }

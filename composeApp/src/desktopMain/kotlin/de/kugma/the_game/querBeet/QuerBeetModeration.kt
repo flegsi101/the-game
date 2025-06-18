@@ -27,34 +27,34 @@ import javax.sound.sampled.AudioSystem
 
 
 @Composable
-fun QuerBeetModeration(game: QuerBeet, modifier: Modifier = Modifier) {
-    val state by game.querBeetState.collectAsState()
+fun QuerBeetModeration(game: QuerBeetGame, modifier: Modifier = Modifier) {
+    val state by game.state.collectAsState()
 
     Column(modifier) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.padding(10.dp)
         ) {
-            RoundTrigger(game, Round.None)
-            RoundTrigger(game, Round.StaubsaugerStaffel)
-            RoundTrigger(game, Round.KuenstlerDuett)
-            RoundTrigger(game, Round.Schuetten)
-            RoundTrigger(game, Round.OhrenAufSpeed)
+            RoundTrigger(game, QuerBeetRound.None)
+            RoundTrigger(game, QuerBeetRound.StaubsaugerStaffel)
+            RoundTrigger(game, QuerBeetRound.KuenstlerDuett)
+            RoundTrigger(game, QuerBeetRound.Schuetten)
+            RoundTrigger(game, QuerBeetRound.OhrenAufSpeed)
         }
 
         when (state.currentRound) {
-            Round.None -> {}
-            Round.StaubsaugerStaffel -> {}
-            Round.KuenstlerDuett -> KuenstlerDuettModeration(game)
-            Round.Schuetten -> {}
-            Round.OhrenAufSpeed -> OhrenAufSpeed(game)
+            QuerBeetRound.None -> {}
+            QuerBeetRound.StaubsaugerStaffel -> StaubsaugerStaffelModeration(game)
+            QuerBeetRound.KuenstlerDuett -> KuenstlerDuettModeration(game)
+            QuerBeetRound.Schuetten -> SchuettenModeration(game)
+            QuerBeetRound.OhrenAufSpeed -> OhrenAufSpeed(game)
         }
     }
 }
 
 @Composable
-private fun RowScope.RoundTrigger(querBeet: QuerBeet, round: Round) {
-    val state by querBeet.querBeetState.collectAsState()
+private fun RowScope.RoundTrigger(querBeet: QuerBeetGame, round: QuerBeetRound) {
+    val state by querBeet.state.collectAsState()
 
 
     val bgNormal = MaterialTheme.colors.primary
@@ -73,7 +73,7 @@ private fun RowScope.RoundTrigger(querBeet: QuerBeet, round: Round) {
 }
 
 @Composable
-private fun OhrenAufSpeed(querBeet: QuerBeet) {
+private fun OhrenAufSpeed(querBeet: QuerBeetGame) {
     val coroutineScope = rememberCoroutineScope()
     val songBoard = remember { SongBoard(coroutineScope) }
 
@@ -87,6 +87,8 @@ private fun OhrenAufSpeed(querBeet: QuerBeet) {
 
 
     Column {
+        WinnerSelector(querBeet, QuerBeetRound.OhrenAufSpeed)
+
         Row {
             Button(onClick = { querBeet.updateOhrenAufSpeed { OhrenAufSpeedState() } }) { Text("reset") }
             Button(onClick = { songBoard.stop() }) { Text("stop") }
