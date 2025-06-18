@@ -101,14 +101,22 @@ private fun ColumnScope.Wuerfeldart(pubGames: PubGames) {
     val wuerfelPointsTeam1 = remember { TextFieldState() }
     val wuerfelPointsTeam2 = remember { TextFieldState() }
 
-    Row {
+    Row(
+        modifier = Modifier.weight(1f)
+            .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
+            .padding(10.dp)
+    ) {
         Button(
             modifier = Modifier.weight(1f),
             onClick = {
-                pubGames.setWuerfeldartPoints(
-                    Team.Team1,
-                    wuerfelPointsTeam1.text.toString().toInt()
-                )
+                try {
+                    pubGames.setWuerfeldartPoints(
+                        Team.Team1,
+                        wuerfelPointsTeam1.text.toString().toInt()
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }) {
             Text("Commit")
         }
@@ -125,10 +133,14 @@ private fun ColumnScope.Wuerfeldart(pubGames: PubGames) {
         Button(
             modifier = Modifier.weight(1f),
             onClick = {
-                pubGames.setWuerfeldartPoints(
-                    Team.Team2,
-                    wuerfelPointsTeam2.text.toString().toInt()
-                )
+                try {
+                    pubGames.setWuerfeldartPoints(
+                        Team.Team2,
+                        wuerfelPointsTeam2.text.toString().toInt()
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }) {
             Text("Commit")
         }
@@ -142,16 +154,21 @@ private fun ColumnScope.Tresenschupse(pubGames: PubGames) {
 
     Row(
         modifier = Modifier
+            .weight(1f)
             .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
             .padding(10.dp)
     ) {
         Button(
             modifier = Modifier.weight(1f),
             onClick = {
-                pubGames.setTresenschupsenPoints(
-                    Team.Team1,
-                    pointsTeam1.text.toString().toInt()
-                )
+                try {
+                    pubGames.setTresenschupsenPoints(
+                        Team.Team1,
+                        pointsTeam1.text.toString().toInt()
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }) {
             Text("Commit")
         }
@@ -168,10 +185,14 @@ private fun ColumnScope.Tresenschupse(pubGames: PubGames) {
         Button(
             modifier = Modifier.weight(1f),
             onClick = {
-                pubGames.setTresenschupsenPoints(
-                    Team.Team2,
-                    pointsTeam2.text.toString().toInt()
-                )
+                try {
+                    pubGames.setTresenschupsenPoints(
+                        Team.Team2,
+                        pointsTeam2.text.toString().toInt()
+                    )
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }) {
             Text("Commit")
         }

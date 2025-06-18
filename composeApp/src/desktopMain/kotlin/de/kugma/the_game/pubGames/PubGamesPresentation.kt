@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,11 +54,27 @@ fun PubGamesPresentation(game: PubGames, modifier: Modifier) {
         )
         if (state.currentGame == Round.Wuerfeldart) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().weight(1f)
+                    .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
+                    .padding(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally)
             ) {
-                Text(state.wuerfeldartPoints[Team.Team1].toString())
-                Text(state.wuerfeldartPoints[Team.Team2].toString())
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Team 1", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text(state.wuerfeldartPoints[Team.Team1].toString(), fontSize = 20.sp)
+                }
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Team 2", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text(state.wuerfeldartPoints[Team.Team2].toString(), fontSize = 20.sp)
+                }
             }
         }
 
@@ -68,11 +85,27 @@ fun PubGamesPresentation(game: PubGames, modifier: Modifier) {
         )
         if (state.currentGame == Round.Tresenschupsen) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().weight(1f)
+                    .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
+                    .padding(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally)
             ) {
-                Text(state.tresenschupsenPoints[Team.Team1].toString())
-                Text(state.tresenschupsenPoints[Team.Team2].toString())
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Team 1", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text(state.tresenschupsenPoints[Team.Team1].toString(), fontSize = 20.sp)
+                }
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Team 2", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    Text(state.tresenschupsenPoints[Team.Team2].toString(), fontSize = 20.sp)
+                }
             }
         }
 
@@ -84,7 +117,9 @@ fun PubGamesPresentation(game: PubGames, modifier: Modifier) {
         if (state.currentGame == Round.Ausstechen) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().weight(1f)
+                    .border(width = 3.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
+                    .padding(10.dp)
             ) {
                 AusstechenPoint(game, 0)
                 AusstechenPoint(game, 1)
