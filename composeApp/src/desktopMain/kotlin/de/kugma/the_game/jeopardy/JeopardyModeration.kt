@@ -55,6 +55,12 @@ fun JeopardyModeration(game: Jeopardy) {
                     Text("Reset")
                 }
 
+                if (state.countdownRunning)
+                    Button(onClick = { game.removeCountdown() }) { Text("stop timer") }
+                else
+                    Button(onClick = { game.startCountdown() }) { Text("start timer") }
+
+
                 if (openQuestion != null) {
                     Button(
                         onClick = { game.closeQuestion(false) },

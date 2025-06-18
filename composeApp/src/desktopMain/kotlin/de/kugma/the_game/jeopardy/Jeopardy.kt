@@ -1,6 +1,7 @@
 package de.kugma.the_game.jeopardy
 
 import androidx.compose.runtime.mutableStateListOf
+import de.kugma.the_game.common.Countdown
 import de.kugma.the_game.common.createPersistedState
 import de.kugma.the_game.common.update
 import kotlinx.coroutines.flow.Flow
@@ -21,13 +22,21 @@ internal data class State(
         mutableStateListOf(false, false, false, false, false),
         mutableStateListOf(false, false, false, false, false),
         mutableStateListOf(false, false, false, false, false),
-    )
+    ),
+    @Transient val countdownSeconds: Int = 0,
+    @Transient val countdownRunning: Boolean = false
 )
 
 class Jeopardy {
 
     companion object {
-        val Categories = listOf("Baderegeln", "Woher soll ich das Wissen?", "Emoji", "Wortkunst", "Fake or Real?")
+        val Categories = listOf(
+            "Baderegeln",
+            "Woher soll ich das Wissen?",
+            "Emoji",
+            "Wortkunst",
+            "Fake or Real?"
+        )
     }
 
     private val _state = createPersistedState("jeopardy.json", State())
@@ -37,6 +46,10 @@ class Jeopardy {
             it.openQuestion!!.first,
             it.openQuestion!!.second
         )
+    }
+
+    val countdown = Countdown(10) { remaining ->
+        _state.update { it.copy(countdownSeconds = remaining) }
     }
 
     private val _onTitle = MutableStateFlow(true)
@@ -98,9 +111,12 @@ class Jeopardy {
     }
 
     fun closeQuestion(mark: Boolean = true) {
-        _state.update { current -> {}
+        removeCountdown()
+        _state.update { current ->
+            {}
             val questionStates = current.questionStates
-            questionStates[current.openQuestion!!.first][current.openQuestion!!.second] = questionStates[current.openQuestion!!.first][current.openQuestion!!.second] || mark
+            questionStates[current.openQuestion!!.first][current.openQuestion!!.second] =
+                questionStates[current.openQuestion!!.first][current.openQuestion!!.second] || mark
 
             current.copy(
                 openQuestion = null,
@@ -110,15 +126,19 @@ class Jeopardy {
     }
 
     fun givePointsTeamOne(points: Int) {
-        _state.update { it.copy(
-            pointsTeamOne = it.pointsTeamOne + points
-        ) }
+        _state.update {
+            it.copy(
+                pointsTeamOne = it.pointsTeamOne + points
+            )
+        }
     }
 
     fun givePointsTeamTwo(points: Int) {
-        _state.update { it.copy(
-            pointsTeamTwo = it.pointsTeamTwo + points
-        ) }
+        _state.update {
+            it.copy(
+                pointsTeamTwo = it.pointsTeamTwo + points
+            )
+        }
     }
 
     fun start() {
@@ -131,5 +151,16 @@ class Jeopardy {
                 openQuestion = Pair(category, points)
             )
         }
+    }
+
+    fun startCountdown() {
+        _state.update { it.copy(countdownRunning = true) }
+        countdown.reset(10)
+        countdown.start()
+    }
+
+    fun removeCountdown() {
+        _state.update { it.copy(countdownRunning = false) }
+        countdown.stop()
     }
 }

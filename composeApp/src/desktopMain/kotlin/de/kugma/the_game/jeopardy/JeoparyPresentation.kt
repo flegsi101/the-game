@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +48,25 @@ fun JeopardyPresentation(
                     modifier = Modifier
                         .weight(1f)
                 ) {
+                    if (state.countdownRunning) {
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = state.countdownSeconds.toString(),
+                                textAlign = TextAlign.Center,
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = if (state.countdownSeconds > 0) Color.White else Color.Black,
+                                modifier = Modifier
+                                    .width(100.dp)
+                                    .align(Alignment.Center)
+                                    .background(
+                                        color = if (state.countdownSeconds > 0) GameColor.Blue else GameColor.Orange,
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .padding(vertical = 5.dp)
+                            )
+                        }
+                    }
                     openQuestion!!.render(GameWindow.Presentation)
                 }
             } else {
