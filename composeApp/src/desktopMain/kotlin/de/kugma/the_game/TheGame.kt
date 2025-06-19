@@ -1,9 +1,11 @@
 package de.kugma.the_game
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -13,10 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.rememberWindowState
 import de.kugma.the_game.common.Storage
@@ -41,16 +46,20 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.Json
+import thegame.composeapp.generated.resources.Res
+import java.io.File
+import java.net.URI
+import javax.sound.sampled.AudioSystem
 
 @OptIn(DelicateCoroutinesApi::class)
 class TheGame(
     private val onExit: () -> Unit
 ) {
+    var inWinnerScreen by mutableStateOf(false)
 
     private var jeopardy = Jeopardy()
     private var pubGames = PubGames()
     private var querBeet: QuerBeetGame = QuerBeetGame(this)
-
 
     val stateFile = Storage.file("appState.json")
 
@@ -80,6 +89,14 @@ class TheGame(
         }
     }
 
+    fun playWinnerAudio() {
+        val audioStream =
+            AudioSystem.getAudioInputStream(File(URI(Res.getUri("files/champions.wav"))))
+        val clip = AudioSystem.getClip()
+        clip.open(audioStream)
+        clip.start()
+    }
+
     //======================================================
     // PRESENTATION
     //======================================================
@@ -96,6 +113,23 @@ class TheGame(
                 height = 720.dp
             )
         ) {
+            if (inWinnerScreen) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text("🎊", fontSize = 100.sp)
+                    if (state.pointsTeamOne > state.pointsTeamTwo) {
+                        Text("TEAM 2", fontSize = 80.sp, fontWeight = FontWeight.ExtraBold)
+                    } else if (state.pointsTeamTwo > state.pointsTeamOne) {
+                        Text("TEAM 1", fontSize = 80.sp, fontWeight = FontWeight.ExtraBold)
+                    } else {
+                        Text("ALLE !1elf", fontSize = 80.sp, fontWeight = FontWeight.ExtraBold)
+                    }
+                }
+                return@Window
+            }
             if (!loading) {
                 if (state.currentGame != Game.None) {
                     Column(
@@ -178,10 +212,16 @@ class TheGame(
                 Text("loading...")
             } else {
                 Column {
-
-
                     Row(modifier = Modifier.padding(10.dp)) {
-                        Button(onClick = ::home) { Text("home") }
+                        Row {
+                            Button(onClick = ::home) { Text("home") }
+                            Button(onClick = {
+                                playWinnerAudio()
+                                inWinnerScreen = !inWinnerScreen
+                            }) {
+                                Text("Winner Screen")
+                            }
+                        }
                         Box(modifier = Modifier.height(20.dp)) {}
                         if (state.currentGame == Game.None) {
                             Text("Games")
