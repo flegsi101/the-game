@@ -40,7 +40,7 @@ internal fun KuenstlerDuettPresentation(game: QuerBeetGame) {
                 .padding(40.dp)
         ) {
             Text(
-                text = QuerBeetRound.OhrenAufSpeed.title,
+                text = QuerBeetRound.KuenstlerDuett.title,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.align(Alignment.Center)

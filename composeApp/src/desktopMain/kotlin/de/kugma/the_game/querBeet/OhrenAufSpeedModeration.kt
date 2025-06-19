@@ -65,14 +65,14 @@ internal fun OhrenAufSpeedModeration(querBeet: QuerBeetGame) {
             Column {
                 Text("Team 1")
                 Row {
-                    Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam1 = it.pointsTeam1 + 1) } }) {
-                        Text("1 Pkt")
+                    Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam1 = it.pointsTeam1 + 5) } }) {
+                        Text("5 Pkt")
                     }
                     Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam1 = it.pointsTeam1 + 3) } }) {
                         Text("3 Pkt")
                     }
-                    Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam1 = it.pointsTeam1 + 5) } }) {
-                        Text("5 Pkt")
+                    Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam1 = it.pointsTeam1 + 1) } }) {
+                        Text("1 Pkt")
                     }
                 }
             }
@@ -80,14 +80,14 @@ internal fun OhrenAufSpeedModeration(querBeet: QuerBeetGame) {
             Column {
                 Text("Team 2")
                 Row {
-                    Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam2 = it.pointsTeam2 + 1) } }) {
-                        Text("1 Pkt")
+                    Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam2 = it.pointsTeam2 + 5) } }) {
+                        Text("5 Pkt")
                     }
                     Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam2 = it.pointsTeam2 + 3) } }) {
                         Text("3 Pkt")
                     }
-                    Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam2 = it.pointsTeam2 + 5) } }) {
-                        Text("5 Pkt")
+                    Button(onClick = { querBeet.updateOhrenAufSpeed { it -> it.copy(pointsTeam2 = it.pointsTeam2 + 1) } }) {
+                        Text("1 Pkt")
                     }
                 }
 

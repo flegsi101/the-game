@@ -94,7 +94,7 @@ fun JeopardyPresentation(
                 )
 
                 Text(
-                    text = "${state.pointsTeamOne} - Team 2",
+                    text = "${state.pointsTeamTwo} - Team 2",
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold
                 )

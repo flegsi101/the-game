@@ -36,14 +36,14 @@ internal fun KuenstlerDuettModeration(game: QuerBeetGame) {
                     viewModel.initTurn(Team.Team1)
                     viewModel.resetCountdown()
                 },
-                enabled = state.availableTerms.size >= 5
+                enabled = state.availableTerms.size >= 5 && state.turn?.team != Team.Team1
             ) { Text("Team 1") }
             Button(
                 onClick = {
                     viewModel.initTurn(Team.Team2)
                     viewModel.resetCountdown()
                 },
-                enabled = state.availableTerms.size >= 5
+                enabled = state.availableTerms.size >= 5 && state.turn?.team != Team.Team2
             ) { Text("Team 2") }
             Button(onClick = { viewModel.resetState() }) { Text("reset") }
         }
