@@ -15,13 +15,15 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import de.kugma.the_game.GameWindow
 
 interface JeopardyQuestion {
     fun getPoints(): Int
 
     @Composable
-    fun render(window: GameWindow)
+    fun renderModeration()
+
+    @Composable
+    fun renderPresentation()
 }
 
 @Composable
@@ -66,15 +68,13 @@ class Baderegeln100 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Was mache ich vor dem Schwimmen?")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Was mache ich vor dem Schwimmen?") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Ich kühle mich ab")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Ich kühle mich ab")
     }
 }
 
@@ -85,15 +85,14 @@ class Baderegeln200 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Was darf ich nicht machen?")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Was darf ich nicht machen?") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Rennen, Schubsen, unter Wasser drücken")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Rennen, Schubsen, unter Wasser drücken")
+
     }
 }
 
@@ -104,15 +103,13 @@ class Baderegeln300 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Joker")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Joker") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("JOKER 🥳")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("JOKER 🥳")
     }
 }
 
@@ -123,15 +120,13 @@ class Baderegeln400 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Was mache ich bei Gewitter?")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Was mache ich bei Gewitter?") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Ich verlasse sofort das Wasser")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Ich verlasse sofort das Wasser")
     }
 }
 
@@ -142,15 +137,13 @@ class Baderegeln500 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Warum darf man sich nicht auf Schwimmflügel oder Luftmatratzen verlassen?")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Warum darf man sich nicht auf Schwimmflügel oder Luftmatratzen verlassen?") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Sie sind nicht sicher und schützen nicht vor dem Ertrinken")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Sie sind nicht sicher und schützen nicht vor dem Ertrinken")
     }
 }
 
@@ -165,15 +158,13 @@ class Wissen100 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Nase und Ohren")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Nase und Ohren") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Welcher Körperteil wächst ein Leben lang weiter?")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Welcher Körperteil wächst ein Leben lang weiter?")
     }
 }
 
@@ -184,15 +175,14 @@ class Wissen200 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Wegen der Farbstoffe in ihrer Nahrung (z.B. Garnelen)")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Wegen der Farbstoffe in ihrer Nahrung (z.B. Garnelen)") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Warum sehen Flamingos pink aus?")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Warum sehen Flamingos pink aus?")
+
     }
 }
 
@@ -203,15 +193,13 @@ class Wissen300 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("3")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("3") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Wie viele Herzen hat ein Tintenfisch?")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Wie viele Herzen hat ein Tintenfisch?")
     }
 }
 
@@ -222,15 +210,13 @@ class Wissen400 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("etwa 5 - 6 Liter (ca. 8% Körpergewicht)")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("etwa 5 - 6 Liter (ca. 8% Körpergewicht)") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Wie viele Liter Blut hat ein durchschnittlicher Mensch?")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Wie viele Liter Blut hat ein durchschnittlicher Mensch?")
     }
 }
 
@@ -241,15 +227,13 @@ class Wissen500 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Graphen")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Graphen") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Welcher Stoff ist härter als Diamant – und kommt sogar in Bleistiften vor?")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Welcher Stoff ist härter als Diamant – und kommt sogar in Bleistiften vor?")
     }
 }
 
@@ -285,15 +269,13 @@ class Emoji100 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Batman")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Batman") }
+    }
 
-        if (window == GameWindow.Presentation)
-            EmojiPresentation("Welcher Film wird gesucht?", "🤵‍♂️🦇🌃")
+    @Composable
+    override fun renderPresentation() {
+        EmojiPresentation("Welcher Film wird gesucht?", "🤵‍♂️🦇🌃")
     }
 }
 
@@ -304,15 +286,13 @@ class Emoji200 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Batman")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Batman") }
+    }
 
-        if (window == GameWindow.Presentation)
-            EmojiPresentation("Welches Spiel wird gesucht?", "⛏️🟫🟩🏡")
+    @Composable
+    override fun renderPresentation() {
+        EmojiPresentation("Welches Spiel wird gesucht?", "⛏️🟫🟩🏡")
     }
 }
 
@@ -323,15 +303,13 @@ class Emoji300 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Auch ein blindes Huhn findet mal ein Korn")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Auch ein blindes Huhn findet mal ein Korn") }
+    }
 
-        if (window == GameWindow.Presentation)
-            EmojiPresentation("Welches Sprichwort wird gesucht?", "🦯🐓🔎🌽")
+    @Composable
+    override fun renderPresentation() {
+        EmojiPresentation("Welches Sprichwort wird gesucht?", "🦯🐓🔎🌽")
     }
 }
 
@@ -342,15 +320,13 @@ class Emoji400 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Sonic")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Sonic") }
+    }
 
-        if (window == GameWindow.Presentation)
-            EmojiPresentation("Welcher Film wird gesucht?", "🦔🔵💨👟")
+    @Composable
+    override fun renderPresentation() {
+        EmojiPresentation("Welcher Film wird gesucht?", "🦔🔵💨👟")
     }
 }
 
@@ -361,15 +337,13 @@ class Emoji500 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Ich glaube mein Schwein pfeift")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Ich glaube mein Schwein pfeift") }
+    }
 
-        if (window == GameWindow.Presentation)
-            EmojiPresentation("Welches Sprichwort wird gesucht?", "🤔🐷😗🎵")
+    @Composable
+    override fun renderPresentation() {
+        EmojiPresentation("Welches Sprichwort wird gesucht?", "🤔🐷😗🎵")
     }
 }
 
@@ -384,15 +358,13 @@ class Wortkunst100 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Marke")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Marke") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Was ergibt das Anagramm „ramke“?")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Was ergibt das Anagramm „ramke“?")
     }
 }
 
@@ -403,20 +375,18 @@ class Wortkunst200 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Im Regen stehen lassen")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Im Regen stehen lassen") }
+    }
 
-        if (window == GameWindow.Presentation)
-            MutlilineQuestion(
-                listOf(
-                    Pair("Welches Sprichwort ist hier verdreht?", 50.sp),
-                    Pair("„Im Regen sitzen“", 60.sp),
-                )
+    @Composable
+    override fun renderPresentation() {
+        MutlilineQuestion(
+            listOf(
+                Pair("Welches Sprichwort ist hier verdreht?", 50.sp),
+                Pair("„Im Regen sitzen“", 60.sp),
             )
+        )
     }
 }
 
@@ -427,15 +397,13 @@ class Wortkunst300 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Bank - Sitzgelegenheit, Geldinstitut, Sandbank")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Bank - Sitzgelegenheit, Geldinstitut, Sandbank") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Welches deutsche Wort hat 3 Bedeutungen?")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Welches deutsche Wort hat 3 Bedeutungen?")
     }
 }
 
@@ -446,15 +414,13 @@ class Wortkunst400 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Tat")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Tat") }
+    }
 
-        if (window == GameWindow.Presentation)
-            SimpleQuestion("Welches Wort steckt in: „TOMATE“ + „RATTE“ – aber nicht in „MOTTE“?")
+    @Composable
+    override fun renderPresentation() {
+        SimpleQuestion("Welches Wort steckt in: „TOMATE“ + „RATTE“ – aber nicht in „MOTTE“?")
     }
 }
 
@@ -465,23 +431,21 @@ class Wortkunst500 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("Der Mensch - Kind krabbeln, Erwachsener normal, Alter mit Stock")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("Der Mensch - Kind krabbeln, Erwachsener normal, Alter mit Stock") }
+    }
 
-        if (window == GameWindow.Presentation)
-            MutlilineQuestion(
-                listOf(
-                    Pair("Das Rätsel der Sphinx", 50.sp),
-                    Pair(
-                        "Was geht am Morgen auf vier, am Mittag auf zwei und am Abend auf drei Beinen?",
-                        60.sp
-                    ),
-                )
+    @Composable
+    override fun renderPresentation() {
+        MutlilineQuestion(
+            listOf(
+                Pair("Das Rätsel der Sphinx", 50.sp),
+                Pair(
+                    "Was geht am Morgen auf vier, am Mittag auf zwei und am Abend auf drei Beinen?",
+                    60.sp
+                ),
             )
+        )
     }
 }
 
@@ -526,19 +490,17 @@ class FakeOrReal100 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("A ist richtig (Metall dehnt sich aus)")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("A ist richtig (Metall dehnt sich aus)") }
+    }
 
-        if (window == GameWindow.Presentation)
-            FakeOrRealPresentation(
-                "Was ist richtig?",
-                "A) Der Eiffelturm ist im Sommer höher als im Winter.",
-                "B) Der Mond ist größer als die Erde."
-            )
+    @Composable
+    override fun renderPresentation() {
+        FakeOrRealPresentation(
+            "Was ist richtig?",
+            "A) Der Eiffelturm ist im Sommer höher als im Winter.",
+            "B) Der Mond ist größer als die Erde."
+        )
     }
 }
 
@@ -549,19 +511,17 @@ class FakeOrReal200 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("B ist richtig (z.B. durch Ring schwimmen)")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("B ist richtig (z.B. durch Ring schwimmen)") }
+    }
 
-        if (window == GameWindow.Presentation)
-            FakeOrRealPresentation(
-                "Was ist richtig?",
-                "A) Goldfische haben ein 3-Sekunden-Gedächtnis.",
-                "B) Goldfische können trainiert werden.",
-            )
+    @Composable
+    override fun renderPresentation() {
+        FakeOrRealPresentation(
+            "Was ist richtig?",
+            "A) Goldfische haben ein 3-Sekunden-Gedächtnis.",
+            "B) Goldfische können trainiert werden.",
+        )
     }
 }
 
@@ -572,19 +532,17 @@ class FakeOrReal300 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("A ist richtig (einige tausend Jahre her)")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("A ist richtig (einige tausend Jahre her)") }
+    }
 
-        if (window == GameWindow.Presentation)
-            FakeOrRealPresentation(
-                "Was ist richtig?",
-                "A) Die Sahara war einmal ein grüner Urwald.",
-                "B) Es hat noch nie in Ägypten geschneit.",
-            )
+    @Composable
+    override fun renderPresentation() {
+        FakeOrRealPresentation(
+            "Was ist richtig?",
+            "A) Die Sahara war einmal ein grüner Urwald.",
+            "B) Es hat noch nie in Ägypten geschneit.",
+        )
     }
 }
 
@@ -595,19 +553,17 @@ class FakeOrReal400 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("A ist richtig (es gibt Poststationen für Touristen)")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("A ist richtig (es gibt Poststationen für Touristen)") }
+    }
 
-        if (window == GameWindow.Presentation)
-            FakeOrRealPresentation(
-                "Was ist richtig?",
-                "A) In der Antarktis gibt es eine Poststation.",
-                "B) In Island gibt es keine Insekten.",
-            )
+    @Composable
+    override fun renderPresentation() {
+        FakeOrRealPresentation(
+            "Was ist richtig?",
+            "A) In der Antarktis gibt es eine Poststation.",
+            "B) In Island gibt es keine Insekten.",
+        )
     }
 }
 
@@ -618,18 +574,16 @@ class FakeOrReal500 : JeopardyQuestion {
     }
 
     @Composable
-    override fun render(window: GameWindow) {
-        if (window == GameWindow.Moderation) {
-            Column {
-                Text("B ist richtig (ein untersuchtes Exemplar geschätzt Alter von 392±120 Jahren)")
-            }
-        }
+    override fun renderModeration() {
+        Column { Text("B ist richtig (ein untersuchtes Exemplar geschätzt Alter von 392±120 Jahren)") }
+    }
 
-        if (window == GameWindow.Presentation)
-            FakeOrRealPresentation(
-                "Was ist richtig?",
-                "A) Menschen und Dinosaurier lebten zur gleichen Zeit.",
-                "B) Einige Haie sind älter als Bäume.",
-            )
+    @Composable
+    override fun renderPresentation() {
+        FakeOrRealPresentation(
+            "Was ist richtig?",
+            "A) Menschen und Dinosaurier lebten zur gleichen Zeit.",
+            "B) Einige Haie sind älter als Bäume.",
+        )
     }
 }

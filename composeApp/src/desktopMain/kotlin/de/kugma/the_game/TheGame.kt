@@ -21,6 +21,9 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.rememberWindowState
 import de.kugma.the_game.common.Storage
 import de.kugma.the_game.common.Team
+import de.kugma.the_game.composables.ScorePanel
+import de.kugma.the_game.entites.Game
+import de.kugma.the_game.entites.TheGameState
 import de.kugma.the_game.jeopardy.Jeopardy
 import de.kugma.the_game.jeopardy.JeopardyModeration
 import de.kugma.the_game.jeopardy.JeopardyPresentation
@@ -30,7 +33,6 @@ import de.kugma.the_game.pubGames.PubGamesPresentation
 import de.kugma.the_game.querBeet.QuerBeetGame
 import de.kugma.the_game.querBeet.QuerBeetModeration
 import de.kugma.the_game.querBeet.QuerBeetPresentation
-import de.kugma.the_game.querBeet.QuerBeetRound
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,29 +40,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-
-enum class GameWindow {
-    Moderation, Presentation
-}
-
-enum class GameEnum {
-    None,
-    Jeopary,
-    PubGames,
-    QuerBeet
-}
-
-@Serializable
-data class TheGameState(
-    val currentGameEnum: GameEnum = GameEnum.None,
-    val pointsTeamOne: Int = 0,
-    val pointsTeamTwo: Int = 0,
-    val jeopardyPlayed: Boolean = false,
-    val pubGamesPlayed: Boolean = false,
-    val querBeetPlayed: Boolean = false
-)
 
 @OptIn(DelicateCoroutinesApi::class)
 class TheGame(
@@ -117,7 +97,7 @@ class TheGame(
             )
         ) {
             if (!loading) {
-                if (state.currentGameEnum != GameEnum.None) {
+                if (state.currentGame != Game.None) {
                     Column(
                         modifier = Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -125,16 +105,16 @@ class TheGame(
                         ScorePanel(
                             state.pointsTeamOne,
                             state.pointsTeamTwo,
-                            title = state.currentGameEnum.toString()
+                            title = state.currentGame.toString()
                         )
                         val fill = Modifier.weight(1f)
 
                         @Suppress("KotlinConstantConditions")
-                        when (state.currentGameEnum) {
-                            GameEnum.Jeopary -> JeopardyPresentation(jeopardy, fill)
-                            GameEnum.PubGames -> PubGamesPresentation(pubGames, fill)
-                            GameEnum.QuerBeet -> querBeet.presentation(fill)
-                            GameEnum.None -> Text("Unreachable")
+                        when (state.currentGame) {
+                            Game.Jeopary -> JeopardyPresentation(jeopardy, fill)
+                            Game.PubGames -> PubGamesPresentation(pubGames, fill)
+                            Game.QuerBeet -> QuerBeetPresentation(querBeet, fill)
+                            Game.None -> Text("Unreachable")
                         }
                     }
                 } else {
@@ -156,31 +136,31 @@ class TheGame(
 
     private fun home() {
         GameLog.logToFile("go home")
-        _state.update { it.copy(currentGameEnum = GameEnum.None) }
+        _state.update { it.copy(currentGame = Game.None) }
     }
 
-    private fun launchGame(gameEnum: GameEnum) {
-        GameLog.logToFile("launch $gameEnum")
+    private fun launchGame(game: Game) {
+        GameLog.logToFile("launch $game")
 
-        when (gameEnum) {
-            GameEnum.Jeopary -> jeopardy = Jeopardy()
-            GameEnum.PubGames -> pubGames = PubGames()
-            GameEnum.QuerBeet -> querBeet = QuerBeetGame(this)
+        when (game) {
+            Game.Jeopary -> jeopardy = Jeopardy()
+            Game.PubGames -> pubGames = PubGames()
+            Game.QuerBeet -> querBeet = QuerBeetGame(this)
             else -> {}
         }
 
-        _state.update { it.copy(currentGameEnum = gameEnum) }
+        _state.update { it.copy(currentGame = game) }
     }
 
-    private fun onGameWon(team: Team, gameEnum: GameEnum) {
+    private fun onGameWon(team: Team, game: Game) {
         _state.update {
             it.copy(
-                currentGameEnum = GameEnum.None,
+                currentGame = Game.None,
                 pointsTeamOne = it.pointsTeamOne + (if (team == Team.Team1 || team == Team.Both) 1 else 0),
                 pointsTeamTwo = it.pointsTeamTwo + (if (team == Team.Team2 || team == Team.Both) 1 else 0),
-                jeopardyPlayed = it.jeopardyPlayed || gameEnum == GameEnum.Jeopary,
-                pubGamesPlayed = it.pubGamesPlayed || gameEnum == GameEnum.PubGames,
-                querBeetPlayed = it.querBeetPlayed || gameEnum == GameEnum.QuerBeet
+                jeopardyPlayed = it.jeopardyPlayed || game == Game.Jeopary,
+                pubGamesPlayed = it.pubGamesPlayed || game == Game.PubGames,
+                querBeetPlayed = it.querBeetPlayed || game == Game.QuerBeet
             )
         }
     }
@@ -203,42 +183,42 @@ class TheGame(
                     Row(modifier = Modifier.padding(10.dp)) {
                         Button(onClick = ::home) { Text("home") }
                         Box(modifier = Modifier.height(20.dp)) {}
-                        if (state.currentGameEnum == GameEnum.None) {
+                        if (state.currentGame == Game.None) {
                             Text("Games")
                             Button(
-                                onClick = { launchGame(GameEnum.Jeopary) },
+                                onClick = { launchGame(Game.Jeopary) },
                                 enabled = !state.jeopardyPlayed
                             ) { Text("Jeopardy") }
                             Button(
-                                onClick = { launchGame(GameEnum.PubGames) },
+                                onClick = { launchGame(Game.PubGames) },
                                 enabled = !state.pubGamesPlayed
                             ) { Text("Pub Games") }
                             Button(
-                                onClick = { launchGame(GameEnum.QuerBeet) },
+                                onClick = { launchGame(Game.QuerBeet) },
                                 enabled = !state.querBeetPlayed
                             ) { Text("Quer Beet") }
                         } else {
                             Text("Winner")
                             Button(
-                                onClick = { onGameWon(Team.Team1, GameEnum.Jeopary) },
+                                onClick = { onGameWon(Team.Team1, Game.Jeopary) },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = GameColor.Yellow)
                             ) { Text("Team 1") }
                             Button(
-                                onClick = { onGameWon(Team.Team2, GameEnum.PubGames) },
+                                onClick = { onGameWon(Team.Team2, Game.PubGames) },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = GameColor.Red)
                             ) { Text("Team 2") }
                             Button(
-                                onClick = { onGameWon(Team.Both, GameEnum.QuerBeet) },
+                                onClick = { onGameWon(Team.Both, Game.QuerBeet) },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = GameColor.Blue)
                             ) { Text("Both") }
                         }
                     }
 
-                    when (state.currentGameEnum) {
-                        GameEnum.Jeopary -> JeopardyModeration(jeopardy)
-                        GameEnum.PubGames -> PubGamesModeration(pubGames, modifier = Modifier)
-                        GameEnum.QuerBeet -> querBeet.moderation()
-                        GameEnum.None -> Button(onClick = { resetGame() }) {
+                    when (state.currentGame) {
+                        Game.Jeopary -> JeopardyModeration(jeopardy)
+                        Game.PubGames -> PubGamesModeration(pubGames, modifier = Modifier)
+                        Game.QuerBeet -> QuerBeetModeration(querBeet)
+                        Game.None -> Button(onClick = { resetGame() }) {
                             Text("Reset Game")
                         }
                     }

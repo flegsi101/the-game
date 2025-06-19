@@ -107,6 +107,7 @@ class Jeopardy {
     }
 
     fun reset() {
+        removeCountdown()
         _state.update { State() }
     }
 

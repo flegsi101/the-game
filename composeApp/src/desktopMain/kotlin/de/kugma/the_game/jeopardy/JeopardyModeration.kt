@@ -1,8 +1,6 @@
 package de.kugma.the_game.jeopardy
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -18,11 +16,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import de.kugma.the_game.GameColor
-import de.kugma.the_game.GameWindow
 
 @Composable
 fun JeopardyModeration(game: Jeopardy) {
@@ -55,13 +51,12 @@ fun JeopardyModeration(game: Jeopardy) {
                     Text("Reset")
                 }
 
-                if (state.countdownRunning)
-                    Button(onClick = { game.removeCountdown() }) { Text("stop timer") }
-                else
-                    Button(onClick = { game.startCountdown() }) { Text("start timer") }
-
-
                 if (openQuestion != null) {
+                    if (state.countdownRunning)
+                        Button(onClick = { game.removeCountdown() }) { Text("stop timer") }
+                    else
+                        Button(onClick = { game.startCountdown() }) { Text("start timer") }
+
                     Button(
                         onClick = { game.closeQuestion(false) },
                         colors = ButtonDefaults.buttonColors(backgroundColor = GameColor.Gray)
@@ -99,7 +94,7 @@ fun JeopardyModeration(game: Jeopardy) {
 
         if (!onTitle) {
             if (openQuestion != null) {
-                openQuestion!!.render(GameWindow.Moderation)
+                openQuestion!!.renderModeration()
             } else {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(

@@ -1,4 +1,4 @@
-package de.kugma.the_game
+package de.kugma.the_game.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.adamglin.composeshadow.dropShadow
+import de.kugma.the_game.GameColor
 
 private class ScoreShape(val site: Site) : Shape {
     enum class Site {
@@ -83,8 +84,8 @@ private class TitleLine(val height: Dp) : Shape {
 
 @Composable
 internal fun ScorePanel(
-    teamOnePoints: Int,
-    teamTwoPoints: Int,
+    pointsLeft: Int,
+    pointsRight: Int,
     title: String = ""
 ) {
     Row(
@@ -96,7 +97,7 @@ internal fun ScorePanel(
             .width(200.dp)
 
         Text(
-            text = teamOnePoints.toString(),
+            text = pointsLeft.toString(),
             fontWeight = FontWeight.SemiBold,
             color = Color.Black,
             textAlign = TextAlign.Center,
@@ -104,11 +105,11 @@ internal fun ScorePanel(
                 .width(150.dp)
                 .dropShadow(
                     shape = ScoreShape(ScoreShape.Site.Left),
-                    color = GameColor.Yellow.copy(alpha = 0.5f),
+                    color = GameColor.Companion.Yellow.copy(alpha = 0.5f),
                     blur = 10.dp
                 )
                 .clip(ScoreShape(ScoreShape.Site.Left))
-                .background(GameColor.Yellow)
+                .background(GameColor.Companion.Yellow)
                 .padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = 30.dp)
         )
 
@@ -127,12 +128,12 @@ internal fun ScorePanel(
                             .width(14.dp)
                             .dropShadow(
                                 shape = TitleLine(50.dp),
-                                color = GameColor.Red,
+                                color = GameColor.Companion.Red,
                                 blur = 4.dp,
                                 offsetX = 0.dp,
                                 offsetY = 0.dp
                             )
-                            .background(GameColor.Red, shape = TitleLine(50.dp))
+                            .background(GameColor.Companion.Red, shape = TitleLine(50.dp))
                     ) {}
                     Text(
                         text = title,
@@ -146,29 +147,29 @@ internal fun ScorePanel(
                             .width(14.dp)
                             .dropShadow(
                                 shape = TitleLine(50.dp),
-                                color = GameColor.Yellow,
+                                color = GameColor.Companion.Yellow,
                                 blur = 4.dp,
                                 offsetX = 0.dp,
                                 offsetY = 0.dp
                             )
-                            .background(GameColor.Yellow, shape = TitleLine(50.dp))
+                            .background(GameColor.Companion.Yellow, shape = TitleLine(50.dp))
                     ) {}
                 }
         }
 
         Text(
-            text = teamTwoPoints.toString(),
+            text = pointsRight.toString(),
             color = Color.White,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .width(150.dp)
                 .dropShadow(
                     shape = ScoreShape(ScoreShape.Site.Right),
-                    color = GameColor.Red.copy(alpha = 0.5f),
+                    color = GameColor.Companion.Red.copy(alpha = 0.5f),
                     blur = 10.dp,
                 )
                 .clip(ScoreShape(ScoreShape.Site.Right))
-                .background(GameColor.Red)
+                .background(GameColor.Companion.Red)
                 .padding(start = 30.dp, top = 10.dp, bottom = 10.dp, end = 10.dp)
 
         )
